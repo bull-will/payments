@@ -51,6 +51,7 @@ public class Payment {
             this.water_start = water_start;
             this.water_end = water_end;
             name = year + "." + month + " (" + MONTHS[month] + ")";
+            AdjustHeatingTariff();
         } else {
             throw new ArrayIndexOutOfBoundsException("Wrong number of month - Неправильный номер месяца");
         }
@@ -82,10 +83,14 @@ public class Payment {
     }
 
     void payForHeating() {
-        if (month != 0 & month <= 3 | month >= 11) /* from november through march */ {
-            paymentForHeating = (int) Math.round(heatingTariff);
+        paymentForHeating = (int) Math.round(heatingTariff);
+    }
+
+    private void AdjustHeatingTariff() {
+        if (month != 0 & month > 4 | month < 10) /* from november through march */ {
+            heatingTariff = 0;
         } else if (month == 4 || month == 10) /* for half a month of heating in april and october */ {
-            paymentForHeating = (int) Math.round(heatingTariff / 2);
+            heatingTariff /= 2;
         }
     }
 
