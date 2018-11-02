@@ -16,6 +16,8 @@ public class Payment {
     double flatTariff = 197.0;
     double garbageTariff = 22.0;
 
+    double heatingMustPay = 0.0;
+
     String name; //year and month represent the name for a payment
 
     int year;
@@ -42,7 +44,7 @@ public class Payment {
     The methods of this class must be run to calculate the payments for all services and the total payment.
     Method payForEverything() (at the bottom) runs them all.
     */
-    public Payment(int year, int month, int electro_start, int electro_end, int water_start, int water_end) {
+    public Payment(int year, int month, int electro_start, int electro_end, int water_start, int water_end, double heatingMustPay) {
         if (month >= 0 & month < 13) {
             this.year = year;
             this.month = month;
@@ -50,12 +52,16 @@ public class Payment {
             this.electro_end = electro_end;
             this.water_start = water_start;
             this.water_end = water_end;
+            this.heatingMustPay = heatingMustPay;
             name = year + "." + month + " (" + MONTHS[month] + ")";
-            AdjustHeatingTariff();
         } else {
             throw new ArrayIndexOutOfBoundsException("Wrong number of month - Неправильный номер месяца");
         }
 
+    }
+
+    public Payment(int year, int month, int electro_start, int electro_end, int water_start, int water_end) {
+        this(year, month, electro_start, electro_end, water_start, water_end, 0d);
     }
 
     void payForElectricity() {
@@ -83,15 +89,24 @@ public class Payment {
     }
 
     void payForHeating() {
-        paymentForHeating = (int) Math.round(heatingTariff);
+        if (heatingMustPay != 0.0) {
+            paymentForHeating = (int) Math.round(heatingMustPay);
+        } else {
+            paymentForHeating = (int) Math.round(heatingTariff);
+        }
     }
 
-    private void AdjustHeatingTariff() {
-        if (month != 0 & month > 4 | month < 10) /* from november through march */ {
+    void adjustHeatingPayment() {
+        if (heatingMustPay != 0) {
             heatingTariff = 0;
-        } else if (month == 4 || month == 10) /* for half a month of heating in april and october */ {
-            heatingTariff /= 2;
         }
+            payForHeating();
+
+//        if (month != 0 & month > 4 | month < 10) /* from november through march */ {
+//            heatingTariff = 0;
+//        } else if (month == 4 || month == 10) /* for half a month of heating in april and october */ {
+//            heatingTariff /= 2;
+//        }
     }
 
     void payForWater() {
@@ -119,7 +134,7 @@ public class Payment {
 
     void payForEverything() {
         payForElectricity();
-        payForHeating();
+        adjustHeatingPayment();
         payForWater();
         payForFlat();
         payForGarbage();

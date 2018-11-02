@@ -64,9 +64,20 @@ public class Runner {
         Payment aug2018 = new PaymentSinceAugust2018
                 (year, month, 24120, 24365, 632, 636);
         aug2018.payForEverything(); // as the complete set of normal payments was done in this month
-        PaymentsArrays.payments2018[month] = jul2018; //storing this months entry into the archive of payments
+        PaymentsArrays.payments2018[month] = aug2018; //storing this months entry into the archive of payments
 
-        Payment current = aug2018;
+        month = 9; // changes accordingly to the number of the current month
+        Payment sep2018 = new PaymentSinceAugust2018
+                (year, month, 24365, 24568, 636, 640);
+        sep2018.payForEverything(); // as the complete set of normal payments was done in this month
+        PaymentsArrays.payments2018[month] = sep2018; //storing this months entry into the archive of payments
+
+        month = 10; // changes accordingly to the number of the current month
+        Payment oct2018 = new PaymentSinceOctober2018
+                (year, month, 24568, 24902, 640, 643, 1279.81);
+        PaymentsArrays.payments2018[month] = oct2018; //storing this months entry into the archive of payments
+
+        Payment current = oct2018;
         print(current);// print complete payment data to *.doc file. The file will be stored in the project directory
 //        toDataBase(current, true);
 
@@ -412,21 +423,21 @@ public class Runner {
         // let's write the data to the .doc file!
         try {
             dataOut.write(payment.name + ":\n\n"); // The year and the months are written at the first line
-            dataOut.write("Квартплата\t\t\tТариф " + (int) payment.flatTariff + " руб.\n");
+            dataOut.write("Квартплата\t\t\tТариф " + Math.round(payment.flatTariff) + " руб.\n");
             dataOut.write("\t\t\t\tПлатеж " + payment.paymentForFlat + " руб.\n\n");
             dataOut.write("Электричество\n");
             dataOut.write("(Нач. пок. счетчика:\t" + payment.electro_start + ")\n");
             dataOut.write("(Конеч. пок. счетчика:\t" + payment.electro_end + ")\n");
             dataOut.write("(Потреблено кВт:\t\t" + payment.kWattConsumed + ")\n");
             dataOut.write("\t\t\t\tПлатеж " + payment.paymentForElectricity + " руб.\n\n");
-            dataOut.write("Вода\t\t\t\tТариф " + (int) payment.waterTariff + " руб.\n");
+            dataOut.write("Вода\t\t\t\tТариф " + Math.round(payment.waterTariff) + " руб.\n");
             dataOut.write("(Нач. пок. счетчика:\t" + payment.water_start + ")\n");
             dataOut.write("(Конеч. пок. счетчика:\t" + payment.water_end + ")\n");
             dataOut.write("(Потреблено куб.м:\t" + payment.m3consumed + ")\n");
             dataOut.write("\t\t\t\tПлатеж " + payment.paymentForWater + " руб.\n\n");
-            dataOut.write("Отопление\t\t\tТариф " + (int) payment.heatingTariff + " руб.\n");
+            dataOut.write("Отопление\t\t\tТариф " + Math.round(payment.heatingTariff) + " руб.\n");
             dataOut.write("\t\t\t\tПлатеж " + payment.paymentForHeating + " руб.\n\n");
-            dataOut.write("Вывоз мусора\t\tТариф " + (int) payment.garbageTariff + " руб.\n");
+            dataOut.write("Вывоз мусора\t\tТариф " + Math.round(payment.garbageTariff) + " руб.\n");
             dataOut.write("\t\t\t\tПлатеж " + payment.paymentForGarbage + " руб.\n\n");
             dataOut.write("\t\t\t\tВсего: " + payment.total + " руб.\n");
             dataOut.flush();
