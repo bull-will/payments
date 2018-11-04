@@ -16,7 +16,16 @@ public class Payment {
     double flatTariff = 197.0;
     double garbageTariff = 22.0;
 
+    double electroMustPay = 0.0;
+    boolean electroPaymentSet = false;
     double heatingMustPay = 0.0;
+    boolean heatingPaymentSet = false;
+    double waterMustPay = 0.0;
+    boolean waterPaymentSet = false;
+    double flatMustPay = 0.0;
+    boolean flatPaymentSet = false;
+    double garbageMustPay = 0.0;
+    boolean garbagePaymentSet = false;
 
     String name; //year and month represent the name for a payment
 
@@ -44,7 +53,7 @@ public class Payment {
     The methods of this class must be run to calculate the payments for all services and the total payment.
     Method payForEverything() (at the bottom) runs them all.
     */
-    public Payment(int year, int month, int electro_start, int electro_end, int water_start, int water_end, double heatingMustPay) {
+    public Payment(int year, int month, int electro_start, int electro_end, int water_start, int water_end) {
         if (month >= 0 & month < 13) {
             this.year = year;
             this.month = month;
@@ -52,7 +61,6 @@ public class Payment {
             this.electro_end = electro_end;
             this.water_start = water_start;
             this.water_end = water_end;
-            this.heatingMustPay = heatingMustPay;
             name = year + "." + month + " (" + MONTHS[month] + ")";
         } else {
             throw new ArrayIndexOutOfBoundsException("Wrong number of month - Неправильный номер месяца");
@@ -60,12 +68,18 @@ public class Payment {
 
     }
 
-    public Payment(int year, int month, int electro_start, int electro_end, int water_start, int water_end) {
-        this(year, month, electro_start, electro_end, water_start, water_end, 0d);
+
+    void setElectroPayment (double electroMustPay) {
+        this.electroMustPay = electroMustPay;
+        electroPaymentSet = true;
     }
 
     void payForElectricity() {
         kWattConsumed = electro_end - electro_start;
+        if (electroPaymentSet == true) {
+            paymentForElectricity = (int) Math.round(electroMustPay);
+            return;
+        }
         double paymentForElectricityCopeek = 0;
         if (kWattConsumed >= 0) {
             if (kWattConsumed <= electroLimit1) {
@@ -88,39 +102,67 @@ public class Payment {
         paymentForElectricity = (int) Math.round(paymentForElectricityCopeek);
     }
 
-    void payForHeating() {
-        if (heatingMustPay != 0.0) {
-            paymentForHeating = (int) Math.round(heatingMustPay);
-        } else {
-            paymentForHeating = (int) Math.round(heatingTariff);
-        }
+    void setHeatingPayment (double heatingMustPay) {
+        this.heatingMustPay = heatingMustPay;
+        heatingPaymentSet = true;
     }
 
-    void adjustHeatingPayment() {
-        if (heatingMustPay != 0) {
+    void payForHeating() {
+        if (heatingPaymentSet == true) {
             heatingTariff = 0;
+            paymentForHeating = (int) Math.round(heatingMustPay);
+            return;
         }
-            payForHeating();
+            if (month != 0 & month > 4 | month < 10) /* from november through march */ {
+            heatingTariff = 0;
+        } else if (month == 4 || month == 10) /* for half a month of heating in april and october */ {
+            heatingTariff /= 2;
+        }
+        paymentForHeating = (int) Math.round(heatingTariff);
+    }
 
-//        if (month != 0 & month > 4 | month < 10) /* from november through march */ {
-//            heatingTariff = 0;
-//        } else if (month == 4 || month == 10) /* for half a month of heating in april and october */ {
-//            heatingTariff /= 2;
-//        }
+    void setWaterPayment (double waterMustPay) {
+        this.waterMustPay = waterMustPay;
+        waterPaymentSet = true;
     }
 
     void payForWater() {
-        m3consumed = water_end - water_start;
+        if (waterPaymentSet == true) {
+            m3consumed = water_end - water_start;
+            waterTariff = 0;
+            paymentForWater = (int) Math.round(waterMustPay);
+            return;
+        }
         if (m3consumed >= 0) {
             paymentForWater = (int) Math.round(m3consumed * waterTariff);
         }
     }
 
+    void setFlatPayment (double flatMustPay) {
+        this.flatMustPay = flatMustPay;
+        flatPaymentSet = true;
+    }
+
     void payForFlat() {
+        if (flatPaymentSet == true) {
+            flatTariff = 0;
+            paymentForFlat = (int) Math.round(flatMustPay);
+            return;
+        }
         paymentForFlat = (int) Math.round(flatTariff);
     }
 
+    void setGarbagePayment (double garbageMustPay) {
+        this.garbageMustPay = garbageMustPay;
+        garbagePaymentSet = true;
+    }
+
     void payForGarbage() {
+        if (garbagePaymentSet == true) {
+            garbageTariff = 0;
+            paymentForGarbage = (int) Math.round(garbageMustPay);
+            return;
+        }
         paymentForGarbage = (int) Math.round(garbageTariff);
     }
 
@@ -134,7 +176,7 @@ public class Payment {
 
     void payForEverything() {
         payForElectricity();
-        adjustHeatingPayment();
+        payForHeating();
         payForWater();
         payForFlat();
         payForGarbage();

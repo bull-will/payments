@@ -18,7 +18,8 @@ public class Runner {
         Payment jan2018 = new Payment
                 (year, month, 22394, 22657, 610, 614);
         jan2018.payForEverything(); // as the complete set of normal payments was done in this month
-        PaymentsArrays.payments2018[month] = jan2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = jan2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(jan2018);
 
         month = 2; // changes accordingly to the number of the current month
         Payment feb2018 = new Payment
@@ -26,13 +27,15 @@ public class Runner {
         feb2018.payForEverything(); // as the complete set of normal payments was done in this month
         feb2018.paymentForHeating = 0; // didn't pay for heating
         feb2018.getTotal();
-        PaymentsArrays.payments2018[month] = feb2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = feb2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(feb2018);
 
         month = 3; // changes accordingly to the number of the current month
         Payment mar2018 = new Payment
                 (year, month, 22861, 23104, 616, 619);
         mar2018.payForEverything(); // as the complete set of normal payments was done in this month
-        PaymentsArrays.payments2018[month] = mar2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = mar2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(mar2018);
 
         month = 4; // changes accordingly to the number of the current month
         Payment apr2018 = new Payment
@@ -40,54 +43,65 @@ public class Runner {
         apr2018.payForEverything(); // as the complete set of normal payments was done in this month
         apr2018.paymentForHeating = 0; // didn't pay for heating
         apr2018.getTotal();
-        PaymentsArrays.payments2018[month] = apr2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = apr2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(apr2018);
 
         month = 5; // changes accordingly to the number of the current month
         Payment may2018 = new Payment
                 (year, month, 23411, 23584, 622, 626);
         may2018.payForEverything(); // as the complete set of normal payments was done in this month
-        PaymentsArrays.payments2018[month] = may2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = may2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(may2018);
 
         month = 6; // changes accordingly to the number of the current month
         Payment jun2018 = new Payment
                 (year, month, 23584, 23816, 626, 629);
         jun2018.payForEverything(); // as the complete set of normal payments was done in this month
-        PaymentsArrays.payments2018[month] = jun2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = jun2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(jun2018);
 
         month = 7; // changes accordingly to the number of the current month
         Payment jul2018 = new Payment
                 (year, month, 23816, 24120, 629, 632);
         jul2018.payForEverything(); // as the complete set of normal payments was done in this month
-        PaymentsArrays.payments2018[month] = jul2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = jul2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(jul2018);
 
         month = 8; // changes accordingly to the number of the current month
-        Payment aug2018 = new PaymentSinceAugust2018
+        Payment aug2018 = new Payment
                 (year, month, 24120, 24365, 632, 636);
+        aug2018.setWaterPayment(0d);
         aug2018.payForEverything(); // as the complete set of normal payments was done in this month
-        PaymentsArrays.payments2018[month] = aug2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = aug2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(aug2018);
 
         month = 9; // changes accordingly to the number of the current month
-        Payment sep2018 = new PaymentSinceAugust2018
+        Payment sep2018 = new Payment
                 (year, month, 24365, 24568, 636, 640);
+        sep2018.setWaterPayment(0d);
         sep2018.payForEverything(); // as the complete set of normal payments was done in this month
-        PaymentsArrays.payments2018[month] = sep2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments2018[month] = sep2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(sep2018);
 
         month = 10; // changes accordingly to the number of the current month
-        Payment oct2018 = new PaymentSinceOctober2018
-                (year, month, 24568, 24902, 640, 643, 1279.81);
-        PaymentsArrays.payments2018[month] = oct2018; //storing this months entry into the archive of payments
+        Payment oct2018 = new Payment
+                (year, month, 24568, 24902, 640, 643);
+        oct2018.setHeatingPayment(1279.81);
+        oct2018.setWaterPayment(0d);
+        oct2018.payForEverything();// as the complete set of normal payments was done in this month
+        PaymentsArchive.payments2018[month] = oct2018; //storing this months entry into the archive of payments
+        PaymentsArchive.payments.add(oct2018);
 
-        Payment current = oct2018;
-        print(current);// print complete payment data to *.doc file. The file will be stored in the project directory
+        print(oct2018);// print complete payment data to *.doc file. The file will be stored in the project directory
 //        toDataBase(current, true);
 
         /* section of printing for info and curiosity: */
 //        printToConsole(current);// additional printing to console just for info
 //        print(current, "Trial"); // For curiosity
-//        print(PaymentsArrays.payments2018[month], PaymentsArrays.payments2018[month].name+"_from_array");
-//        print(PaymentsArrays.payments2018[month]); // For curiosity
-//        print(PaymentsArrays.payments2018[month], PaymentsArrays.payments2018[month].name+"_from_array");
-//        printFromArchive(PaymentsArrays.payments2018);
+//        print(PaymentsArchive.payments2018[month], PaymentsArchive.payments2018[month].name+"_from_array");
+//        print(PaymentsArchive.payments2018[month]); // For curiosity
+//        print(PaymentsArchive.payments2018[month], PaymentsArchive.payments2018[month].name+"_from_array");
+//        printFromArchive(PaymentsArchive.payments2018);
     }
 
     static void doAdditionalPayments() throws IOException {
